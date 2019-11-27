@@ -48,7 +48,7 @@ include_once 'core_config.php';
 				<input type='hidden' name='return' value='<? echo $payment_return_cancel; ?>'>
 				
 				<!-- IPN Url -->
-				<input type='hidden' name='notify_url' value='https://demo.dopehacker.com/paypal_integration/paypal_ipn.php'>
+				<input type='hidden' name='notify_url' value='https://https://boiling-bayou-19352.herokuapp.com/paypal_ipn.php'>
 				
 				<!-- Submit Button -->
 				<input type="submit" value="Buy Now!" name="submit">
