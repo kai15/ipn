@@ -1,4 +1,4 @@
-<?
+<?php
 ///////////////////////////////////////////////////////////////////////////////
 // How to setup PayPal in your website using PHP + MYSQL
 // Author: Ideal Kamerolli
@@ -8,7 +8,7 @@
 //Database credentials
 define("HOST", "localhost");     // The host you want to connect to.
 define("USER", "root");    // The database username. 
-define("PASSWORD", "");    // The database password. 
+define("PASSWORD", "root");    // The database password. 
 define("DATABASE", "ipn");    // The database name.
 
 //Connect with database
