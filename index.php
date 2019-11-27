@@ -1,4 +1,4 @@
-<? 
+<?php 
 ///////////////////////////////////////////////////////////////////////////////
 // How to setup PayPal in your website using PHP + MYSQL
 // Author: Ideal Kamerolli
@@ -16,7 +16,7 @@ include_once 'core_config.php';
 
 <body>
 <h1>Products</h1>
-<?
+<?php
 	//Fetch products from db in most secured way.							
     $prep_stmt = "SELECT * FROM paypal_products";
     $stmt = $mysqli->prepare($prep_stmt);
