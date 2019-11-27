@@ -167,7 +167,7 @@ class PaypalIPN
             $req .= "&$key=$value";
         }
         // Post the data back to PayPal, using curl. Throw exceptions if errors occur.
-        $ch = curl_init($this->getPaypalUri());
+        $ch = curl_init("https://ipnpb.sandbox.paypal.com/cgi-bin/webscr");
         curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
