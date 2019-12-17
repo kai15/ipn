@@ -1,7 +1,7 @@
 <?php
-include_once('sendmail.php');
-$link = mysql_connect("213.171.200.67", "boutique", "B0ut!Qu3");
-mysql_select_db("boutiquedb", $link);
+// include_once('sendmail.php');
+// $link = mysql_connect("213.171.200.67", "boutique", "B0ut!Qu3");
+// mysql_select_db("boutiquedb", $link);
 
 
 // STEP 1: read POST data
