@@ -12,7 +12,7 @@ class PaypalIPN
     /** Production Postback URL */
     const VERIFY_URI = 'https://ipnpb.paypal.com/cgi-bin/webscr';
     /** Sandbox Postback URL */
-    const SANDBOX_VERIFY_URI = 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr';
+    const SANDBOX_VERIFY_URI = 'https://ipnpb.paypal.com/cgi-bin/webscr';
     /** Response from PayPal indicating validation was successful */
     const VALID = 'VERIFIED';
     /** Response from PayPal indicating validation failed */
