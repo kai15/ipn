@@ -65,7 +65,7 @@ curl_close($ch);
 
 // mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('compare result', '$req', '$res', now())");
 
-$_POST = $myPost;
+// $_POST = $myPost;
 
 if (strcmp(($res), ("VERIFIED")) == 0) {
 	echo "SAKSES";
