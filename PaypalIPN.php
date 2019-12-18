@@ -119,8 +119,10 @@ class PaypalIPN
         curl_close($ch);
         // Check if PayPal verifies the IPN data, and if so, return true.
         if ($res == self::VALID) {
+            echo "masok";
             return true;
         } else {
+            echo "ahuy";
             return false;
         }
     }
