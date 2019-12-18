@@ -38,7 +38,6 @@ foreach ($myPost as $key => $value) {
 		$value = urlencode($value);
 	}
 	$req .= "&$key=$value";
-	echo $req .= "&$key=$value";
 }
 
 // mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('read POST data', '$req', 'none', now())");
@@ -76,10 +75,6 @@ curl_close($ch);
 // mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('compare result', '$req', '$res', now())");
 
 $_POST = $myPost;
-$data_text = "";
-foreach ($_POST as $key => $value) {
-	$data_text .= $key . " = " . $value . "\r\n";
-}
 
 if (strcmp(($res), ("VERIFIED")) == 0) {
 	echo "SAKSES";
