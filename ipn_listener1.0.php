@@ -8,6 +8,9 @@
 
 // Reading POSTed data directly from $_POST causes serialization issues with array data in the POST.
 // Instead, read raw POST data from the input stream.
+// if ( ! count($_POST)) {
+// 	throw new Exception("Missing POST Data");
+// }
 $raw_post_data = file_get_contents('php://input');
 $raw_post_array = explode('&', $raw_post_data);
 $myPost = array();
@@ -40,7 +43,7 @@ foreach ($myPost as $key => $value) {
 // mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('read POST data', '$req', 'none', now())");
 
 // Step 2: POST IPN data back to PayPal to validate
-$res		= "empty";
+// $res		= "empty";
 $ch = curl_init('https://ipnpb.paypal.com/cgi-bin/webscr');
 // $ch = curl_init('https://www.sandbox.paypal.com/cgi-bin/webscr');
 curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
