@@ -53,6 +53,7 @@ curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
+curl_setopt($ch, CURLOPT_SSLVERSION, 6);
 curl_setopt($ch, CURLOPT_HTTPHEADER, array('Connection: Close'));
 
 if (!($res = curl_exec($ch))) {
