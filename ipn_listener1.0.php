@@ -57,7 +57,7 @@ curl_close($ch);
 $_POST = $myPost;
 
 if (strcmp (strtolower($res), strtolower("VERIFIED")) == 0) {
-	echo "SUCCESS";
+	echo "SAKSES";
     // The IPN is verified, process it
 	// mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('response from paypal', '$req', '".json_encode($myPost).'&&USERSID='.$_GET['iud']."', now())");
 
@@ -114,7 +114,7 @@ if (strcmp (strtolower($res), strtolower("VERIFIED")) == 0) {
 	// }
 
 } else {
-	echo "FAILED";
+	echo "JAJAL";
     // IPN invalid, log for manual investigation
 	// mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('INVALID', '$req', '$res', now())");
 	// // emailCreditPayment('Sofian', 'raden.sofian.bahri@gmail.com', $req, json_encode($_POST), "INVALID", "", "");
