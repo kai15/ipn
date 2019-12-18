@@ -8,7 +8,7 @@
 
 // Reading POSTed data directly from $_POST causes serialization issues with array data in the POST.
 // Instead, read raw POST data from the input stream.
-if (!count($_POST)) {
+if ( ! count($_POST)) {
 	throw new Exception("Missing POST Data");
 }
 $raw_post_data = file_get_contents('php://input');
@@ -59,12 +59,15 @@ $ch = curl_init('https://ipnpb.sandbox.paypal.com/cgi-bin/webscr');
 // $res = curl_exec($ch);
 // $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 // curl_close($ch);
+curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
 curl_setopt($ch, CURLOPT_POST, 1);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
 curl_setopt($ch, CURLOPT_SSLVERSION, 6);
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+curl_setopt($ch, CURLOPT_HEADER, false);
 curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
 curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
 curl_setopt($ch, CURLOPT_HTTPHEADER, array('Connection: Close'));
@@ -74,7 +77,11 @@ curl_close($ch);
 
 // mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('compare result', '$req', '$res', now())");
 
-$_POST = $myPost;
+// $_POST = $myPost;
+$data_text = "";
+foreach ($_POST as $key => $value) {
+    $data_text .= $key . " = " . $value . "\r\n";
+}
 
 if (strcmp(($res), ("VERIFIED")) == 0) {
 	echo "SAKSES";
@@ -134,13 +141,7 @@ if (strcmp(($res), ("VERIFIED")) == 0) {
 	// }
 
 } else {
-	echo $res . " ";
-	echo count($raw_post_array) . " ";
-	echo "isi: " . $raw_post_array[0] . " ";
-	echo count($myPost);
-	echo $_POST[0]. " ";
-	echo "Date: " . $_POST['payment_date'];
-	echo "Status: " . $_POST['payment_status'];
+	echo "JAJAL";
 	// IPN invalid, log for manual investigation
 	// mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('INVALID', '$req', '$res', now())");
 	// // emailCreditPayment('Sofian', 'raden.sofian.bahri@gmail.com', $req, json_encode($_POST), "INVALID", "", "");
