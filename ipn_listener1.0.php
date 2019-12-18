@@ -17,7 +17,7 @@ $myPost = array();
 foreach ($raw_post_array as $keyval) {
 	$keyval = explode('=', $keyval);
 	if (count($keyval) == 2) {
-		if ($keyval[0] === 'payment_date') {
+		if ($keyval[0] === NULL) {
 			if (substr_count($keyval[1], '+') === 1) {
 				$keyval[1] = str_replace('+', '%2B', $keyval[1]);
 			}
