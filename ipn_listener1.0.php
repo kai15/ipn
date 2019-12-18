@@ -45,8 +45,8 @@ foreach ($myPost as $key => $value) {
 
 // Step 2: POST IPN data back to PayPal to validate
 // $res		= "empty";
-$ch = curl_init('https://ipnpb.paypal.com/cgi-bin/webscr');
-// $ch = curl_init('https://ipnpb.sandbox.paypal.com/cgi-bin/webscr');
+// $ch = curl_init('https://ipnpb.paypal.com/cgi-bin/webscr');
+$ch = curl_init('https://ipnpb.sandbox.paypal.com/cgi-bin/webscr');
 // $ch = curl_init();
 // curl_setopt($ch, CURLOPT_USERAGENT, 'PayPal');
 // curl_setopt($ch, CURLOPT_HEADER, false);
