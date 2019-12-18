@@ -8,7 +8,7 @@
 
 // Reading POSTed data directly from $_POST causes serialization issues with array data in the POST.
 // Instead, read raw POST data from the input stream.
-if ( ! count($_POST)) {
+if (!count($_POST)) {
 	throw new Exception("Missing POST Data");
 }
 $raw_post_data = file_get_contents('php://input');
@@ -78,7 +78,7 @@ curl_close($ch);
 $_POST = $myPost;
 $data_text = "";
 foreach ($_POST as $key => $value) {
-    $data_text .= $key . " = " . $value . "\r\n";
+	$data_text .= $key . " = " . $value . "\r\n";
 }
 
 if (strcmp(($res), ("VERIFIED")) == 0) {
@@ -139,10 +139,11 @@ if (strcmp(($res), ("VERIFIED")) == 0) {
 	// }
 
 } else {
-	echo $res. " "; 
-	echo $_POST. " "; 
-	echo "Date: ".$_POST['payment_date'];
-	echo "Status: ".$_POST['payment_status'];
+	echo $res . " ";
+	$string = implode(",", $_POST);
+	echo $string;
+	echo "Date: " . $_POST['payment_date'];
+	echo "Status: " . $_POST['payment_status'];
 	// IPN invalid, log for manual investigation
 	// mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('INVALID', '$req', '$res', now())");
 	// // emailCreditPayment('Sofian', 'raden.sofian.bahri@gmail.com', $req, json_encode($_POST), "INVALID", "", "");
