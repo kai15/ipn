@@ -139,7 +139,7 @@ if (strcmp(($res), ("VERIFIED")) == 0) {
 	// }
 
 } else {
-	echo $req. " ";
+	echo $key. " ";
 	echo $_POST. " ";
 	echo $res. " ALIAS JAJAL";
 	// IPN invalid, log for manual investigation
