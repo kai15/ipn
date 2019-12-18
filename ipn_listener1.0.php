@@ -8,9 +8,9 @@
 
 // Reading POSTed data directly from $_POST causes serialization issues with array data in the POST.
 // Instead, read raw POST data from the input stream.
-// if ( ! count($_POST)) {
-// 	throw new Exception("Missing POST Data");
-// }
+if ( ! count($_POST)) {
+	throw new Exception("Missing POST Data");
+}
 $raw_post_data = file_get_contents('php://input');
 $raw_post_array = explode('&', $raw_post_data);
 $myPost = array();
