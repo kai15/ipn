@@ -135,7 +135,7 @@ if (strcmp(($res), ("VERIFIED")) == 0) {
 
 } else {
 	echo $res . " ";
-	echo $raw_post_array;
+	echo count($raw_post_array);
 	echo count($myPost);
 	echo $_POST[0]. " ";
 	echo "Date: " . $_POST['payment_date'];
