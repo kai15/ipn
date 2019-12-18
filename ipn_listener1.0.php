@@ -139,7 +139,8 @@ if (strcmp(($res), ("VERIFIED")) == 0) {
 	// }
 
 } else {
-	echo $res. $_POST['payment_status'];
+	echo $res. " "; 
+	echo $_POST['payment_status'];
 	// IPN invalid, log for manual investigation
 	// mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('INVALID', '$req', '$res', now())");
 	// // emailCreditPayment('Sofian', 'raden.sofian.bahri@gmail.com', $req, json_encode($_POST), "INVALID", "", "");
