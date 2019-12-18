@@ -137,6 +137,7 @@ if (strcmp(($res), ("VERIFIED")) == 0) {
 	echo $res . " ";
 	$string = implode(",", $_POST);
 	echo $string;
+	echo $_POST[0]. " ";
 	echo "Date: " . $_POST['payment_date'];
 	echo "Status: " . $_POST['payment_status'];
 	// IPN invalid, log for manual investigation
