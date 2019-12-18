@@ -53,6 +53,9 @@ curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
 curl_setopt($ch, CURLOPT_SSLVERSION, 6);
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+curl_setopt($ch, CURLOPT_USERAGENT, 'PayPal');
+curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+
 $use_local_certs = true;
 if ($use_local_certs) {
 	curl_setopt($ch, CURLOPT_CAINFO, __DIR__ . "/cert/cacert.pem");
