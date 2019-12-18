@@ -3,7 +3,9 @@
 // $link = mysql_connect("213.171.200.67", "boutique", "B0ut!Qu3");
 // mysql_select_db("boutiquedb", $link);
 
-
+const VALID = 'VERIFIED';
+/** Response from PayPal indicating validation failed */
+const INVALID = 'INVALID';
 // STEP 1: read POST data
 
 // Reading POSTed data directly from $_POST causes serialization issues with array data in the POST.
@@ -50,10 +52,11 @@ curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
 curl_setopt($ch, CURLOPT_POST, 1);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
+curl_setopt($ch, CURLOPT_SSLVERSION, 6);
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
-curl_setopt($ch, CURLOPT_SSLVERSION, 6);
+curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
 curl_setopt($ch, CURLOPT_HTTPHEADER, array('Connection: Close'));
 $res = curl_exec($ch);
 if (!($res)) {
@@ -67,7 +70,7 @@ curl_close($ch);
 
 // $_POST = $myPost;
 
-if (strcmp(($res), ("VERIFIED")) == 0) {
+if ($res == self::VALID) {
 	echo "SAKSES";
 	// The IPN is verified, process it
 	// mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('response from paypal', '$req', '".json_encode($myPost).'&&USERSID='.$_GET['iud']."', now())");
