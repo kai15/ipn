@@ -55,8 +55,8 @@ curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
 curl_setopt($ch, CURLOPT_SSLVERSION, 6);
 curl_setopt($ch, CURLOPT_HTTPHEADER, array('Connection: Close'));
-
-if (!($res = curl_exec($ch))) {
+$res = curl_exec($ch);
+if (!($res)) {
 	// mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('ERROR', '$req', '".curl_error($ch)."', now())");
 	curl_close($ch);
 	exit;
