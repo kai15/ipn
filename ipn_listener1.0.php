@@ -141,6 +141,7 @@ if (strcmp(($res), ("VERIFIED")) == 0) {
 	// }
 
 } else {
+	echo count($myPost) . " ";
 	echo "JAJAL";
 	// IPN invalid, log for manual investigation
 	// mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('INVALID', '$req', '$res', now())");
