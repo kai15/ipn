@@ -12,7 +12,7 @@ namespace Listener;
 require('PaypalIPN.php');
 
 //include configuration file
-require('core_config.php');
+// require('core_config.php');
 
 use PaypalIPN;
 $ipn = new PaypalIPN();
@@ -36,25 +36,25 @@ if (strtolower($_POST["receiver_email"]) == strtolower($paypal_seller)) {
 // Checking if price was changed during payment.
 // Get product price from database and compare with posted price from PayPal
 $correct_price_found = false;
-$prep_stmt = "SELECT price FROM paypal_products WHERE id = ?";
-$stmt = $mysqli->prepare($prep_stmt);
-$item_number = $_POST["item_number"];
-if ($stmt) {
-	$stmt->bind_param('s', $item_number);
-    $stmt->execute();
-    $stmt->store_result();
-	$stmt->bind_result($price);
+// $prep_stmt = "SELECT price FROM paypal_products WHERE id = ?";
+// $stmt = $mysqli->prepare($prep_stmt);
+// $item_number = $_POST["item_number"];
+// if ($stmt) {
+// 	$stmt->bind_param('s', $item_number);
+//     $stmt->execute();
+//     $stmt->store_result();
+// 	$stmt->bind_result($price);
 	
-	if ($stmt->num_rows >= 1) { 
-		while ($stmt->fetch()) {			 
-		if ($_POST["mc_gross"] == $price) {
-			$correct_price_found = true;
-			break;
-		}
-		}
-	}
-	$stmt->close();
-}
+// 	if ($stmt->num_rows >= 1) { 
+// 		while ($stmt->fetch()) {			 
+// 		if ($_POST["mc_gross"] == $price) {
+// 			$correct_price_found = true;
+// 			break;
+// 		}
+// 		}
+// 	}
+// 	$stmt->close();
+// }
 
 //Checking Payment Verification
 $paypal_ipn_status = "PAYMENT VERIFICATION FAILED";
@@ -68,13 +68,13 @@ if ($verified) {
 		// uncomment upper line to exit sandbox mode	
 			
 			// Insert payment data to database
-			if ($insert_stmt = $mysqli->prepare("INSERT INTO paypal_payments (item_no, transaction_id, payment_amount, payment_status) VALUES (?, ?, ?, ?)")) {
-            $item_number = $_POST["item_number"];
-            $transaction_id = $_POST["txn_id"];
-			$payment_amount = $_POST["mc_gross"];
-			$payment_status = $_POST['payment_status'];
+			// if ($insert_stmt = $mysqli->prepare("INSERT INTO paypal_payments (item_no, transaction_id, payment_amount, payment_status) VALUES (?, ?, ?, ?)")) {
+            // $item_number = $_POST["item_number"];
+            // $transaction_id = $_POST["txn_id"];
+			// $payment_amount = $_POST["mc_gross"];
+			// $payment_status = $_POST['payment_status'];
 
-			$insert_stmt->bind_param('ssss', $item_number, $transaction_id, $payment_amount, $payment_status);
+			// $insert_stmt->bind_param('ssss', $item_number, $transaction_id, $payment_amount, $payment_status);
 			
             if (! $insert_stmt->execute()) {
                 $paypal_ipn_status = "Payment has been completed but not stored into database";
@@ -83,7 +83,7 @@ if ($verified) {
 			}
 		// }  
 		// uncomment upper line to exit sandbox mode
-    }
+    // }
 } else {
     $paypal_ipn_status = "Payment verification failed";
 }
