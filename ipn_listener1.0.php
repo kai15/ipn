@@ -17,7 +17,7 @@ $myPost = array();
 foreach ($raw_post_array as $keyval) {
 	$keyval = explode('=', $keyval);
 	if (count($keyval) == 2) {
-		if ($keyval[0] === 'payment_date') {
+		if ($keyval[0] === NULL) {
 			if (substr_count($keyval[1], '+') === 1) {
 				$keyval[1] = str_replace('+', '%2B', $keyval[1]);
 			}
@@ -62,9 +62,18 @@ curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
 curl_setopt($ch, CURLOPT_HTTPHEADER, array('Connection: Close'));
 $res = curl_exec($ch);
 if (!($res)) {
+	$errno = curl_errno($ch);
+	$errstr = curl_error($ch);
+	curl_close($ch);
+	throw new Exception("cURL error: [$errno] $errstr");
 	// mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('ERROR', '$req', '".curl_error($ch)."', now())");
 	curl_close($ch);
 	exit;
+}
+$info = curl_getinfo($ch);
+$http_code = $info['http_code'];
+if ($http_code != 200) {
+	throw new Exception("PayPal responded with http code $http_code");
 }
 curl_close($ch);
 
