@@ -55,29 +55,12 @@ curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 curl_setopt($ch, CURLOPT_USERAGENT, 'PayPal');
 curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
-
-$use_local_certs = true;
-if ($use_local_certs) {
-	curl_setopt($ch, CURLOPT_CAINFO, __DIR__ . "/cert/cacert.pem");
-}
+curl_setopt($ch, CURLOPT_HEADER, false);
 curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
 curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
 curl_setopt($ch, CURLOPT_HTTPHEADER, array('Connection: Close'));
 $res = curl_exec($ch);
-if (!($res)) {
-	$errno = curl_errno($ch);
-	$errstr = curl_error($ch);
-	curl_close($ch);
-	throw new Exception("cURL error: [$errno] $errstr");
-	// mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('ERROR', '$req', '".curl_error($ch)."', now())");
-	curl_close($ch);
-	exit;
-}
-$info = curl_getinfo($ch);
-$http_code = $info['http_code'];
-if ($http_code != 200) {
-	throw new Exception("PayPal responded with http code $http_code");
-}
+$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 curl_close($ch);
 
 // mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('compare result', '$req', '$res', now())");
