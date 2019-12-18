@@ -1,7 +1,7 @@
 <?php
 // include_once('sendmail.php');
-$link = mysql_connect("213.171.200.67", "boutique", "B0ut!Qu3");
-mysql_select_db("boutiquedb", $link);
+// $link = mysql_connect("213.171.200.67", "boutique", "B0ut!Qu3");
+// mysql_select_db("boutiquedb", $link);
 
 
 // STEP 1: read POST data
@@ -30,7 +30,7 @@ foreach ($myPost as $key => $value) {
    $req .= "&$key=$value";
 }
 
-mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('read POST data', '$req', 'none', now())");
+// mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('read POST data', '$req', 'none', now())");
 
 // Step 2: POST IPN data back to PayPal to validate
 $res		= "empty";
@@ -46,76 +46,78 @@ curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
 curl_setopt($ch, CURLOPT_HTTPHEADER, array('Connection: Close'));
 
 if( !($res = curl_exec($ch)) ) {
-	mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('ERROR', '$req', '".curl_error($ch)."', now())");
+	// mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('ERROR', '$req', '".curl_error($ch)."', now())");
     curl_close($ch);
     exit;
 }
 curl_close($ch);
 
-mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('compare result', '$req', '$res', now())");
+// mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('compare result', '$req', '$res', now())");
 
 $_POST = $myPost;
 
 if (strcmp (strtolower($res), strtolower("VERIFIED")) == 0) {
+	echo "SUCCESS";
     // The IPN is verified, process it
-	mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('response from paypal', '$req', '".json_encode($myPost).'&&USERSID='.$_GET['iud']."', now())");
+	// mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('response from paypal', '$req', '".json_encode($myPost).'&&USERSID='.$_GET['iud']."', now())");
 
-	#update the credits
-	$users_id		= $_GET['iud'];
-	$quser			= mysql_query("select * from users where md5(id)='$users_id'");
-	$duser			= mysql_fetch_array($quser);
+	// #update the credits
+	// $users_id		= $_GET['iud'];
+	// $quser			= mysql_query("select * from users where md5(id)='$users_id'");
+	// $duser			= mysql_fetch_array($quser);
 
-	//emailNotify($duser);
+	// //emailNotify($duser);
 
-	$userid		= $duser['id'];
-	$qcredit 	= mysql_query("select * from credit_payment_temp where userid = '$userid'");
-	$dcredit 	= mysql_fetch_array($qcredit);
-	$credit 	= $dcredit['total_credit'];
-	#cek payment_status is Completed
-	if(isset($_POST['payment_status'])){
-		if($_POST['payment_status'] == "Completed"){
-			$transaction_id	= mysql_real_escape_string($_POST['txn_id']);
-			$total			= mysql_real_escape_string($_POST['mc_gross']);
-			$currency		= mysql_real_escape_string($_POST['mc_currency']);
-			$status			= mysql_real_escape_string($_POST['payment_status']);
-			$time			= date("d-m-Y H:i:s");
+	// $userid		= $duser['id'];
+	// $qcredit 	= mysql_query("select * from credit_payment_temp where userid = '$userid'");
+	// $dcredit 	= mysql_fetch_array($qcredit);
+	// $credit 	= $dcredit['total_credit'];
+	// #cek payment_status is Completed
+	// if(isset($_POST['payment_status'])){
+	// 	if($_POST['payment_status'] == "Completed"){
+	// 		$transaction_id	= mysql_real_escape_string($_POST['txn_id']);
+	// 		$total			= mysql_real_escape_string($_POST['mc_gross']);
+	// 		$currency		= mysql_real_escape_string($_POST['mc_currency']);
+	// 		$status			= mysql_real_escape_string($_POST['payment_status']);
+	// 		$time			= date("d-m-Y H:i:s");
 
-			if ($transaction_id == "7XS19393P66165248") {
-				return;
-			}
+	// 		if ($transaction_id == "7XS19393P66165248") {
+	// 			return;
+	// 		}
 
-			//please be aware of this, client's credit will be added if transaction is successfull
-			// $qtrans=mysql_query("insert into credit_payment(transaction_id, total_credit, amount, currency, submitdate, payment_status, userid)
-			// 															values('$transaction_id', '$credit', '".$total."', '".$currency."', now(), '$status', '$userid')");
-			if($qtrans){
-				//please be aware of this, client's credit will be added if transaction is successfull
-				// $qupdate=mysql_query("update users set credits=credits+'".$credit."' where id='".$userid."'");
+	// 		//please be aware of this, client's credit will be added if transaction is successfull
+	// 		// $qtrans=mysql_query("insert into credit_payment(transaction_id, total_credit, amount, currency, submitdate, payment_status, userid)
+	// 		// 															values('$transaction_id', '$credit', '".$total."', '".$currency."', now(), '$status', '$userid')");
+	// 		if($qtrans){
+	// 			//please be aware of this, client's credit will be added if transaction is successfull
+	// 			// $qupdate=mysql_query("update users set credits=credits+'".$credit."' where id='".$userid."'");
 
-				if($qupdate){
-					#emailCreditPayment($duser['username'], $duser['email'], $currency.$total, $credit, $transaction_id, $status, $time);
-					// emailCreditPayment('Sofian', 'raden.sofian.bahri@gmail.com', $currency.$total, $credit, $transaction_id, $status, $time);
-					// emailCreditPayment('Jason', 'jason@recruitment-boutique.com', $currency.$total, $credit, $transaction_id, $status, $time);
-					mysql_query("delete from credit_payment_temp where userid = '$userid'");
-				}else{
-					$error=mysql_error();
-					#emailCreditPayment($duser['username'], $duser['email'], $currency.$total, $credit, $transaction_id, $status, $time);
-					// emailCreditPayment('Sofian', 'raden.sofian.bahri@gmail.com', $currency.$total, $credit, $transaction_id, $status.' credit failed to be updated '.$error, $time);
-				}
-			}else{
-				$error=mysql_error();
-				#emailCreditPayment($duser['username'], $duser['email'], $currency.$total, $credit, $transaction_id, $status, $time);
-				// emailCreditPayment('Sofian', 'raden.sofian.bahri@gmail.com', $currency.$total, $credit, $transaction_id, $status.' credit failed to be inserted to credit payment '.$error, $time);
-			}
-		}else{
-			#emailCreditPayment($duser['username'], $duser['email'], $currency.$total, $credit, $transaction_id, $status, $time);
-			// emailCreditPayment('Sofian', 'raden.sofian.bahri@gmail.com', $currency.$total, $credit, $transaction_id, $status, $time);
-		}
-	}
+	// 			if($qupdate){
+	// 				#emailCreditPayment($duser['username'], $duser['email'], $currency.$total, $credit, $transaction_id, $status, $time);
+	// 				// emailCreditPayment('Sofian', 'raden.sofian.bahri@gmail.com', $currency.$total, $credit, $transaction_id, $status, $time);
+	// 				// emailCreditPayment('Jason', 'jason@recruitment-boutique.com', $currency.$total, $credit, $transaction_id, $status, $time);
+	// 				mysql_query("delete from credit_payment_temp where userid = '$userid'");
+	// 			}else{
+	// 				$error=mysql_error();
+	// 				#emailCreditPayment($duser['username'], $duser['email'], $currency.$total, $credit, $transaction_id, $status, $time);
+	// 				// emailCreditPayment('Sofian', 'raden.sofian.bahri@gmail.com', $currency.$total, $credit, $transaction_id, $status.' credit failed to be updated '.$error, $time);
+	// 			}
+	// 		}else{
+	// 			$error=mysql_error();
+	// 			#emailCreditPayment($duser['username'], $duser['email'], $currency.$total, $credit, $transaction_id, $status, $time);
+	// 			// emailCreditPayment('Sofian', 'raden.sofian.bahri@gmail.com', $currency.$total, $credit, $transaction_id, $status.' credit failed to be inserted to credit payment '.$error, $time);
+	// 		}
+	// 	}else{
+	// 		#emailCreditPayment($duser['username'], $duser['email'], $currency.$total, $credit, $transaction_id, $status, $time);
+	// 		// emailCreditPayment('Sofian', 'raden.sofian.bahri@gmail.com', $currency.$total, $credit, $transaction_id, $status, $time);
+		// }
+	// }
 
-} else{
+} else {
+	echo "FAILED";
     // IPN invalid, log for manual investigation
-	mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('INVALID', '$req', '$res', now())");
-	// emailCreditPayment('Sofian', 'raden.sofian.bahri@gmail.com', $req, json_encode($_POST), "INVALID", "", "");
+	// mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('INVALID', '$req', '$res', now())");
+	// // emailCreditPayment('Sofian', 'raden.sofian.bahri@gmail.com', $req, json_encode($_POST), "INVALID", "", "");
 
 }
 
