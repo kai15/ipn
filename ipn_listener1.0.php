@@ -93,29 +93,29 @@ if (strcmp (strtolower($res), strtolower("VERIFIED")) == 0) {
 
 				if($qupdate){
 					#emailCreditPayment($duser['username'], $duser['email'], $currency.$total, $credit, $transaction_id, $status, $time);
-					emailCreditPayment('Sofian', 'raden.sofian.bahri@gmail.com', $currency.$total, $credit, $transaction_id, $status, $time);
-					emailCreditPayment('Jason', 'jason@recruitment-boutique.com', $currency.$total, $credit, $transaction_id, $status, $time);
+					// emailCreditPayment('Sofian', 'raden.sofian.bahri@gmail.com', $currency.$total, $credit, $transaction_id, $status, $time);
+					// emailCreditPayment('Jason', 'jason@recruitment-boutique.com', $currency.$total, $credit, $transaction_id, $status, $time);
 					mysql_query("delete from credit_payment_temp where userid = '$userid'");
 				}else{
 					$error=mysql_error();
 					#emailCreditPayment($duser['username'], $duser['email'], $currency.$total, $credit, $transaction_id, $status, $time);
-					emailCreditPayment('Sofian', 'raden.sofian.bahri@gmail.com', $currency.$total, $credit, $transaction_id, $status.' credit failed to be updated '.$error, $time);
+					// emailCreditPayment('Sofian', 'raden.sofian.bahri@gmail.com', $currency.$total, $credit, $transaction_id, $status.' credit failed to be updated '.$error, $time);
 				}
 			}else{
 				$error=mysql_error();
 				#emailCreditPayment($duser['username'], $duser['email'], $currency.$total, $credit, $transaction_id, $status, $time);
-				emailCreditPayment('Sofian', 'raden.sofian.bahri@gmail.com', $currency.$total, $credit, $transaction_id, $status.' credit failed to be inserted to credit payment '.$error, $time);
+				// emailCreditPayment('Sofian', 'raden.sofian.bahri@gmail.com', $currency.$total, $credit, $transaction_id, $status.' credit failed to be inserted to credit payment '.$error, $time);
 			}
 		}else{
 			#emailCreditPayment($duser['username'], $duser['email'], $currency.$total, $credit, $transaction_id, $status, $time);
-			emailCreditPayment('Sofian', 'raden.sofian.bahri@gmail.com', $currency.$total, $credit, $transaction_id, $status, $time);
+			// emailCreditPayment('Sofian', 'raden.sofian.bahri@gmail.com', $currency.$total, $credit, $transaction_id, $status, $time);
 		}
 	}
 
 } else{
     // IPN invalid, log for manual investigation
 	mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('INVALID', '$req', '$res', now())");
-	emailCreditPayment('Sofian', 'raden.sofian.bahri@gmail.com', $req, json_encode($_POST), "INVALID", "", "");
+	// emailCreditPayment('Sofian', 'raden.sofian.bahri@gmail.com', $req, json_encode($_POST), "INVALID", "", "");
 
 }
 
