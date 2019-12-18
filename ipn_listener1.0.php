@@ -59,7 +59,6 @@ $ch = curl_init('https://ipnpb.paypal.com/cgi-bin/webscr');
 // $res = curl_exec($ch);
 // $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 // curl_close($ch);
-curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
 curl_setopt($ch, CURLOPT_POST, 1);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
@@ -139,7 +138,8 @@ if (strcmp(($res), ("VERIFIED")) == 0) {
 	// }
 
 } else {
-	echo $res. "JAJAL";
+	echo $req;
+	echo $res. " ALIAS JAJAL";
 	// IPN invalid, log for manual investigation
 	// mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('INVALID', '$req', '$res', now())");
 	// // emailCreditPayment('Sofian', 'raden.sofian.bahri@gmail.com', $req, json_encode($_POST), "INVALID", "", "");
