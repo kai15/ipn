@@ -135,8 +135,7 @@ if (strcmp(($res), ("VERIFIED")) == 0) {
 
 } else {
 	echo $res . " ";
-	$string = implode(",", $_POST);
-	echo $string;
+	echo count($_POST);
 	echo $_POST[0]. " ";
 	echo "Date: " . $_POST['payment_date'];
 	echo "Status: " . $_POST['payment_status'];
