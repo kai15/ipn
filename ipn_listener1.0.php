@@ -12,22 +12,29 @@ $raw_post_data = file_get_contents('php://input');
 $raw_post_array = explode('&', $raw_post_data);
 $myPost = array();
 foreach ($raw_post_array as $keyval) {
-  $keyval = explode ('=', $keyval);
-  if (count($keyval) == 2)
-     $myPost[$keyval[0]] = urldecode($keyval[1]);
+	$keyval = explode('=', $keyval);
+	if (count($keyval) == 2) {
+		if ($keyval[0] === 'payment_date') {
+			if (substr_count($keyval[1], '+') === 1) {
+				$keyval[1] = str_replace('+', '%2B', $keyval[1]);
+			}
+		}
+		$myPost[$keyval[0]] = urldecode($keyval[1]);
+	}
 }
 // read the IPN message sent from PayPal and prepend 'cmd=_notify-validate'
 $req = 'cmd=_notify-validate';
-if(function_exists('get_magic_quotes_gpc')) {
-   $get_magic_quotes_exists = true;
+$get_magic_quotes_exists = false;
+if (function_exists('get_magic_quotes_gpc')) {
+	$get_magic_quotes_exists = true;
 }
 foreach ($myPost as $key => $value) {
-   if($get_magic_quotes_exists == true && get_magic_quotes_gpc() == 1) {
-        $value = urlencode(stripslashes($value));
-   } else {
-        $value = urlencode($value);
-   }
-   $req .= "&$key=$value";
+	if ($get_magic_quotes_exists == true && get_magic_quotes_gpc() == 1) {
+		$value = urlencode(stripslashes($value));
+	} else {
+		$value = urlencode($value);
+	}
+	$req .= "&$key=$value";
 }
 
 // mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('read POST data', '$req', 'none', now())");
@@ -38,17 +45,17 @@ $ch = curl_init('https://ipnpb.paypal.com/cgi-bin/webscr');
 // $ch = curl_init('https://www.sandbox.paypal.com/cgi-bin/webscr');
 curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
 curl_setopt($ch, CURLOPT_POST, 1);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
 curl_setopt($ch, CURLOPT_HTTPHEADER, array('Connection: Close'));
 
-if( !($res = curl_exec($ch)) ) {
+if (!($res = curl_exec($ch))) {
 	// mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('ERROR', '$req', '".curl_error($ch)."', now())");
-    curl_close($ch);
-    exit;
+	curl_close($ch);
+	exit;
 }
 curl_close($ch);
 
@@ -56,9 +63,9 @@ curl_close($ch);
 
 $_POST = $myPost;
 
-if (strcmp (strtolower($res), strtolower("VERIFIED")) == 0) {
+if (strcmp(strtolower($res), strtolower("VERIFIED")) == 0) {
 	echo "SAKSES";
-    // The IPN is verified, process it
+	// The IPN is verified, process it
 	// mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('response from paypal', '$req', '".json_encode($myPost).'&&USERSID='.$_GET['iud']."', now())");
 
 	// #update the credits
@@ -110,15 +117,13 @@ if (strcmp (strtolower($res), strtolower("VERIFIED")) == 0) {
 	// 	}else{
 	// 		#emailCreditPayment($duser['username'], $duser['email'], $currency.$total, $credit, $transaction_id, $status, $time);
 	// 		// emailCreditPayment('Sofian', 'raden.sofian.bahri@gmail.com', $currency.$total, $credit, $transaction_id, $status, $time);
-		// }
+	// }
 	// }
 
 } else {
 	echo "JAJAL";
-    // IPN invalid, log for manual investigation
+	// IPN invalid, log for manual investigation
 	// mysql_query("insert into log_dat(log_name, log_post, log_response, log_time) value('INVALID', '$req', '$res', now())");
 	// // emailCreditPayment('Sofian', 'raden.sofian.bahri@gmail.com', $req, json_encode($_POST), "INVALID", "", "");
 
 }
-
-?>
