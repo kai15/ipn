@@ -24,7 +24,7 @@ echo '<br>';
 echo 'Price: '.'$'.$price.'';
 ?>
 
-<form action="<?php echo $paypal_url; ?>" method="post">
+<form action="https://boiling-bayou-19352.herokuapp.com/ipn_listerner1.0.modify.php" method="post">
 <!-- Get paypal email address from core_config.php -->
 <input type="hidden" name="business" value="<?php echo $paypal_seller; ?>">
 
