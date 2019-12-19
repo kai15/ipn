@@ -35,7 +35,7 @@ echo 'Price: '.'$'.$price.'';
 <input type="hidden" name="currency_code" value="USD">
 
 <!-- IPN Url -->
- <input type='hidden' name='notify_url' value='	https://boiling-bayou-19352.herokuapp.com/paypal_ipn.php'>
+ <input type='hidden' name='notify_url' value='https://boiling-bayou-19352.herokuapp.com/ipn_listerner1.0.modify.php'>
 <!-- Return URLs -->
 <input type='hidden' name='cancel_return' value='<? echo $payment_return_cancel; ?>'>
 <input type='hidden' name='return' value='<? echo $payment_return_success; ?>'>
