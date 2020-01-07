@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://boiling-bayou-19352.herokuapp.com/sitemap_index.xml
